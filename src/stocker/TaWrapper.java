@@ -15,10 +15,8 @@ import java.net.MalformedURLException;
  * @author Chris
  */
 interface TaWrapper {
-
     public void simpleRelativeStrengthIndex();
     public void simpleMovingAverageCallint();
     public void simpleMACD();
-
-
+    public void simpleULT();
 }
