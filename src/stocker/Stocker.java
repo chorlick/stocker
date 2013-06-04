@@ -55,11 +55,9 @@ public class Stocker {
                 split = line.split("\\|");
                 System.out.println(split[0]);
                 stock_list.add(new StockObj(split[0]));
-                if (i++ >= 5) {
+                if (i++ >= 20) {
                     break;
-
                 }
-
             }
             /*
              stock_list.add(new StockObj("RAD"));
@@ -70,13 +68,14 @@ public class Stocker {
             for (StockObj obj : stock_list) {
                 if (obj.ticker.compareTo("Symbol") == 0) {
                     System.out.println("Skipping none symbol");
-                    
-                } else {
-                    obj.calcIndicators();
-                    obj.showFinalOutput();
-                    if (obj.rsi <= 30) {
-                        System.out.println("Look at buying");
 
+                } else {
+                    if (obj.calcIndicators() == 1) {
+                        obj.showFinalOutput();
+                        if (obj.rsi <= 30) {
+                            System.out.println("Look at buying");
+
+                        }
                     }
                 }
             }

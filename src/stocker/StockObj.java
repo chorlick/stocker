@@ -57,14 +57,15 @@ public class StockObj implements QuoteWrapper {
         
     }
 
-    public void simpleRelativeStrengthIndex(int time) {
+    public double simpleRelativeStrengthIndex(int time) {
         lookback = lib.rsiLookback(time);
         lib.rsi(0, close.length - 1, close, lookback, outBegIdx, outNbElement, output);
-        rsi = output[outNbElement.value -1];    
+        if(outNbElement.value != 0) {
+            rsi = output[outNbElement.value -1];    
+            return rsi;
+        }else {
+            return 0;
         
-        int i;
-        for(i = 0; i < output.length; i++) {
-        //    System.err.println("Got : " + output[i - 14]);
         }
      }   
 
@@ -91,12 +92,18 @@ public class StockObj implements QuoteWrapper {
         ult = output[ (int) outNbElement.value -1];
     }
     
-    public void calcIndicators() throws MalformedURLException, IOException {
-            this.simpleRelativeStrengthIndex(14);
+    public int calcIndicators() throws MalformedURLException, IOException {
+            if(this.simpleRelativeStrengthIndex(14) == 0) {
+                return 0;
+            }
+            
+            
             this.resetArrayValues();
+            
             this.simpleMACD(0);
             this.resetArrayValues();
             this.simpleULT();
+            return 1;
             
     }
     
