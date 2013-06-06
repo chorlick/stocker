@@ -51,9 +51,7 @@ public class StockObj implements QuoteWrapper {
         outNbElement = new MInteger();
         ticker = symbol;
         lib = new Core();
-        
-        getYahooQuotes();
-        resetArrayValues();
+       // resetArrayValues();
         
     }
 

@@ -36,61 +36,39 @@ public class Stocker {
     String line;
     int readCount;
 
-    public void init_app() {
-        StockObj goog;
-        try {
-            FTPClient ftp = new FTPClient();
-            FTPClientConfig config = new FTPClientConfig();
-            ftp.configure(config);
-            ftp.connect("ftp.nasdaqtrader.com");
-            ftp.enterRemotePassiveMode();
-            ftp.login("anonymous", "");
+    public void getNASDAQ() throws IOException {
 
-            ftp.changeWorkingDirectory("SymbolDirectory");
-            InputStream in = ftp.retrieveFileStream("nasdaqlisted.txt");
-            BufferedReader inbuf = new BufferedReader(new InputStreamReader(in));
-            int i = 0;
-            while ((line = inbuf.readLine()) != null) {
+        FTPClient ftp = new FTPClient();
+        FTPClientConfig config = new FTPClientConfig();
+        ftp.configure(config);
+        ftp.connect("ftp.nasdaqtrader.com");
+        System.out.println("Connected...");
+        //ftp.enterRemotePassiveMode();
+        ftp.enterLocalPassiveMode();
+        ftp.login("anonymous", "");
+        ftp.setBufferSize(1024 * 1024);
 
-                split = line.split("\\|");
-                System.out.println(split[0]);
-                stock_list.add(new StockObj(split[0]));
-                if (i++ >= 20) {
-                    break;
-                }
-            }
-            /*
-             stock_list.add(new StockObj("RAD"));
-             stock_list.add(new StockObj("GOOG"));
-             stock_list.add(new StockObj("MSFT"));
-             stock_list.add(new StockObj("FNMA"));
-             */
-            for (StockObj obj : stock_list) {
-                if (obj.ticker.compareTo("Symbol") == 0) {
-                    System.out.println("Skipping none symbol");
+        System.out.println("Connected...");
+        ftp.changeWorkingDirectory("SymbolDirectory");
+        InputStream in = ftp.retrieveFileStream("nasdaqlisted.txt");
+        BufferedReader inbuf = new BufferedReader(new InputStreamReader(in));
+        int i = 0;
+        System.out.println("Connected...");
+        while ((line = inbuf.readLine()) != null) {
 
-                } else {
-                    if (obj.calcIndicators() == 1) {
-                        obj.showFinalOutput();
-                        if (obj.rsi <= 30) {
-                            System.out.println("Look at buying");
+            split = line.split("\\|");
+            System.out.println(split[0]);
+            stock_list.add(new StockObj(split[0]));
 
-                        }
-                    }
-                }
-            }
-
-
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(Stocker.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Stocker.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
-    public static void main(String[] args) throws MalformedURLException, IOException {
+    public void init_app() {
 
-        Stocker app = new Stocker();
-        app.init_app();
+        System.out.println("Starting...");
+
+
+
     }
 }
